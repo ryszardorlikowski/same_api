@@ -2,6 +2,7 @@ import uuid
 
 import pytest
 
+from projects.domain import events
 from projects.domain.entities import Project, Task, TASKS_LIMIT, ProjectExceededLimit, NotUniqueTaskTitle, \
     CannotFinishProjectWithUncompletedTasks
 from tests.projects.factories import ProjectFactory, TaskFactory
@@ -59,3 +60,9 @@ def test_cannot_done_project_when_all_tasks_have_not_been_completed():
 
     with pytest.raises(CannotFinishProjectWithUncompletedTasks):
         project.finish()
+
+
+def test_record_event_when_project_is_created():
+    project: Project = ProjectFactory()
+
+    assert events.ProjectCreated(project_id=project.id) == project.events[0]

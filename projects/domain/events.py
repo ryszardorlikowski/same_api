@@ -5,13 +5,28 @@ from projects.domain.value_objects import ProjectId, TaskId
 
 
 @dataclass
-class ProjectIsCreated(Event):
+class ProjectCreated(Event):
     project_id: ProjectId
-    name: str
 
 
 @dataclass
-class AddedNewTaskToProject(Event):
+class ProjectFinished(Event):
+    project_id: ProjectId
+
+
+@dataclass
+class AddedProjectTask(Event):
     project_id: ProjectId
     task_id: TaskId
+
+
+@dataclass
+class RemovedProjectTask(Event):
+    project_id: ProjectId
     task_name: str
+
+
+@dataclass
+class CompletedProjectTask(Event):
+    project_id: ProjectId
+    task_id: TaskId

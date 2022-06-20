@@ -1,7 +1,9 @@
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 
+from foundation.event import Event
+from projects.domain import events
 from projects.domain.value_objects import TaskId, ProjectId
 from foundation.exception import DomainException
 
@@ -53,8 +55,12 @@ class Task:
 class Project:
     id: ProjectId
     name: str
-    tasks: list[Task]
     done: bool = False
+    tasks: list[Task] = field(default_factory=list)
+    events: list[Event] = field(default_factory=list)
+
+    def __post_init__(self):
+        self.events.append(events.ProjectCreated(project_id=self.id))
 
     def add_task(self, name: str) -> None:
         if self.number_of_tasks == TASKS_LIMIT:
@@ -69,6 +75,7 @@ class Project:
             created=datetime.now()
         )
         self.tasks.append(new_task)
+        self.events.append(events.AddedProjectTask(project_id=self.id, task_id=new_task.id))
 
     @property
     def is_done(self):
@@ -81,6 +88,7 @@ class Project:
     def finish(self):
         if all([task.is_done for task in self.tasks]):
             self.done = True
+            self.events.append(events.ProjectFinished(project_id=self.id))
         else:
             raise CannotFinishProjectWithUncompletedTasks
 
@@ -89,10 +97,12 @@ class Project:
             raise CannotRemoveTaskFromDoneProject
         task: Task = self.__find_task(task_id)
         self.tasks.remove(task)
+        self.events.append(events.RemovedProjectTask(project_id=self.id, task_name=task.name))
 
     def complete_task(self, task_id: TaskId) -> None:
         task: Task = self.__find_task(task_id)
         task.complete()
+        self.events.append(events.CompletedProjectTask(project_id=self.id, task_id=task.id))
 
     def __find_task(self, task_id: TaskId) -> Task:
         try:

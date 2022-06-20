@@ -13,10 +13,10 @@ class CreateProjectInputDto:
 class CreateProject:
 
     def __init__(self, projects_repo: ProjectsRepository):
-        self._projects_repo = projects_repo
+        self._project_repo = projects_repo
 
     def execute(self, input_dto: CreateProjectInputDto):
-        self._projects_repo.save(Project(
+        self._project_repo.save(Project(
             id=uuid.uuid4(),
             name=input_dto.name,
             tasks=[]

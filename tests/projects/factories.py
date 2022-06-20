@@ -11,8 +11,6 @@ class ProjectFactory(factory.Factory):
 
     id = uuid.uuid4()
     name = factory.Faker("name")
-    tasks = factory.List([])
-    done = False
 
 
 class TaskFactory(factory.Factory):
