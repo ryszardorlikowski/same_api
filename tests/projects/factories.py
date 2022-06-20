@@ -2,15 +2,17 @@ import uuid
 
 import factory
 
-from boards.domain.entities import Board, Task
+from projects.domain.entities import Project, Task
 
 
-class BoardFactory(factory.Factory):
+class ProjectFactory(factory.Factory):
     class Meta:
-        model = Board
+        model = Project
 
     id = uuid.uuid4()
+    name = factory.Faker("name")
     tasks = factory.List([])
+    done = False
 
 
 class TaskFactory(factory.Factory):
@@ -18,6 +20,6 @@ class TaskFactory(factory.Factory):
         model = Task
 
     id = uuid.uuid4()
-    title = factory.Faker("name")
+    name = factory.Faker("name")
     created = factory.Faker("date_time")
     done = False

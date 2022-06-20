@@ -1,4 +1,4 @@
 import uuid
 
-BoardId = uuid.UUID
+ProjectId = uuid.UUID
 TaskId = uuid.UUID
