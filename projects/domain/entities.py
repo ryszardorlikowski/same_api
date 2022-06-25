@@ -7,7 +7,7 @@ from projects.domain import events
 from projects.domain.value_objects import TaskId, ProjectId
 from foundation.exception import DomainException
 
-TASKS_LIMIT: int = 20
+PROJECT_TASKS_LIMIT: int = 20
 
 
 class ProjectExceededLimit(DomainException):
@@ -63,7 +63,7 @@ class Project:
         self.events.append(events.ProjectCreated(project_id=self.id))
 
     def add_task(self, name: str) -> None:
-        if self.number_of_tasks == TASKS_LIMIT:
+        if self.number_of_tasks == PROJECT_TASKS_LIMIT:
             raise ProjectExceededLimit
 
         if not self.__is_task_name_unique(name):
@@ -95,16 +95,16 @@ class Project:
     def remove_task(self, task_id: TaskId) -> None:
         if self.done:
             raise CannotRemoveTaskFromDoneProject
-        task: Task = self.__find_task(task_id)
+        task: Task = self.__get_task(task_id)
         self.tasks.remove(task)
         self.events.append(events.RemovedProjectTask(project_id=self.id, task_name=task.name))
 
     def complete_task(self, task_id: TaskId) -> None:
-        task: Task = self.__find_task(task_id)
+        task: Task = self.__get_task(task_id)
         task.complete()
         self.events.append(events.CompletedProjectTask(project_id=self.id, task_id=task.id))
 
-    def __find_task(self, task_id: TaskId) -> Task:
+    def __get_task(self, task_id: TaskId) -> Task:
         try:
             task: Task = [task for task in self.tasks if task.id == task_id][0]
             return task

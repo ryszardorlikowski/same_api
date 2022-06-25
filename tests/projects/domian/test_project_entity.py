@@ -3,7 +3,7 @@ import uuid
 import pytest
 
 from projects.domain import events
-from projects.domain.entities import Project, Task, TASKS_LIMIT, ProjectExceededLimit, NotUniqueTaskTitle, \
+from projects.domain.entities import Project, Task, PROJECT_TASKS_LIMIT, ProjectExceededLimit, NotUniqueTaskTitle, \
     CannotFinishProjectWithUncompletedTasks
 from tests.projects.factories import ProjectFactory, TaskFactory
 from tests.random_refs import random_suffix
@@ -11,7 +11,7 @@ from tests.random_refs import random_suffix
 
 def test_cannot_add_new_task_when_number_of_tasks_has_exceeded_the_limit():
     project: Project = ProjectFactory()
-    for _ in range(TASKS_LIMIT):
+    for _ in range(PROJECT_TASKS_LIMIT):
         task_name = f"Task {random_suffix()}"
         project.add_task(name=task_name)
 
