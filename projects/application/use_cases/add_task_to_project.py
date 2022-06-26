@@ -9,6 +9,7 @@ from projects.domain.value_objects import ProjectId
 class AddTaskToProjectInputDto:
     project_id: ProjectId
     name: str
+    description: str
 
 
 class AddTaskToProject:
@@ -18,5 +19,5 @@ class AddTaskToProject:
 
     def execute(self, input_dto: AddTaskToProjectInputDto) -> None:
         project: Project = self._projects_repo.get(input_dto.project_id)
-        project.add_task(name=input_dto.name)
+        project.add_task(name=input_dto.name, description=input_dto.description)
         self._projects_repo.save(project)

@@ -1,6 +1,8 @@
 import uuid
 from dataclasses import dataclass
 
+import injector
+
 from projects.application.repositories.projects_repository import ProjectsRepository
 from projects.domain.entities import Project
 
@@ -11,7 +13,6 @@ class CreateProjectInputDto:
 
 
 class CreateProject:
-
     def __init__(self, projects_repo: ProjectsRepository):
         self._project_repo = projects_repo
 

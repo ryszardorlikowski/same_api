@@ -19,5 +19,6 @@ class TaskFactory(factory.Factory):
 
     id = uuid.uuid4()
     name = factory.Faker("name")
+    description = 'Description'
     created = factory.Faker("date_time")
     done = False

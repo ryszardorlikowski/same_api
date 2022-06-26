@@ -65,4 +65,4 @@ def test_cannot_done_project_when_all_tasks_have_not_been_completed():
 def test_record_event_when_project_is_created():
     project: Project = ProjectFactory()
 
-    assert events.ProjectCreated(project_id=project.id) == project.events[0]
+    assert events.ProjectCreated(project_id=project.id) == project.domain_events[0]

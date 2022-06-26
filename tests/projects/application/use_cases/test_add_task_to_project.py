@@ -1,8 +1,8 @@
 import pytest
 
-from projects.infrastructure.repositories.in_memory_projects_repository import InMemoryProjectsRepository
 from projects.application.repositories.projects_repository import ProjectsRepository
 from projects.application.use_cases.add_task_to_project import AddTaskToProject, AddTaskToProjectInputDto
+from projects_infra.repositories.in_memory_projects_repository import InMemoryProjectsRepository
 from tests.projects.factories import ProjectFactory
 
 
@@ -19,7 +19,8 @@ def test_new_task_is_added_to_project(repo: ProjectsRepository) -> None:
 
     input_dto = AddTaskToProjectInputDto(
         project_id=project.id,
-        name="Task"
+        name="Task",
+        description="Test"
     )
 
     use_case.execute(input_dto)

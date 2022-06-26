@@ -8,3 +8,4 @@ ve36/
 db.sqlite3
 *.egg-info/
 .eggs/
+venv

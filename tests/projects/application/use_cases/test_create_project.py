@@ -1,8 +1,8 @@
 import pytest
 
-from projects.infrastructure.repositories.in_memory_projects_repository import InMemoryProjectsRepository
 from projects.application.repositories.projects_repository import ProjectsRepository
 from projects.application.use_cases.create_project import CreateProjectInputDto, CreateProject
+from projects_infra.repositories.in_memory_projects_repository import InMemoryProjectsRepository
 
 
 @pytest.fixture
